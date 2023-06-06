@@ -74,8 +74,6 @@ public class ProductTest {
         repo.add(product1);
         repo.add(product2);
 
-        
-
         Assertions.assertThrows(AlreadyExistsException.class, () -> {
             repo.add(product3);
         });
