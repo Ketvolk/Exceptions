@@ -25,16 +25,19 @@ public class ShopRepository {
      *
      * @param product — добавляемый товар
      */
-    public void add(Product product) {
-        boolean repeat = false;
-        //проверка на повторение ID
-        for (Product product1 : products) {
-            if (product.getId() == product1.getId()) {
-                repeat = true;
+
+    public Product findById(int id) {
+        for (Product product : products) {
+            if (product.getId() == id) {
+                return product;
             }
         }
+        return null;
+    }
 
-        if (repeat) {
+    public void add(Product product) {
+        //проверка на повторение ID
+        if (findById(product.id) != null) {
             throw new AlreadyExistsException("Element with id: " + product.getId() + " already exists");
         } else {
             products = addToArray(products, product);
@@ -58,22 +61,13 @@ public class ShopRepository {
         products = tmp;
     }
 
-    public Product findById(int id) {
-        for (Product product : products) {
-            if (product.getId() == id) {
-                return product;
-            }
-        }
-        return null;
-    }
 
     public void removeById(int id) {
-
         Product[] tmp = new Product[products.length - 1];
         int copyToIndex = 0;
         if (findById(id) == null) {
             throw new NotFoundException("Element with id: " + id + " not found");
-        } else{
+        } else {
             for (Product product : products) {
                 if (product.getId() != id) {
                     tmp[copyToIndex] = product;
